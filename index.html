@@ -11,14 +11,18 @@
 body {
   margin: 0;
   font-family: Arial;
-  background: #000;
-  color: gold;
+  background: linear-gradient(135deg, #0a1f44, #001233);
+  color: #ffd700;
   text-align: center;
 }
 
 img {
-  width: 130px;
+  width: 120px;
   margin-top: 20px;
+}
+
+h1 {
+  margin: 10px 0;
 }
 
 .stats {
@@ -28,11 +32,11 @@ img {
 }
 
 .stat {
-  background: #111;
+  background: rgba(255,255,255,0.05);
   padding: 10px;
-  border-radius: 10px;
+  border-radius: 12px;
   width: 30%;
-  border: 1px solid gold;
+  border: 1px solid #ffd700;
 }
 
 #grid {
@@ -46,12 +50,16 @@ img {
   padding: 12px;
   border-radius: 12px;
   cursor: pointer;
-  border: 1px solid gold;
+  border: 1px solid #ffd700;
+  transition: 0.2s;
+}
+
+.box:hover {
+  transform: scale(1.05);
 }
 
 .disponible {
-  background: #111;
-  color: gold;
+  background: rgba(255,255,255,0.05);
 }
 
 .reservado {
@@ -75,11 +83,11 @@ img {
 }
 
 .modal-content {
-  background:#111;
+  background:#0a1f44;
   padding:20px;
   border-radius:15px;
-  width:80%;
-  border:1px solid gold;
+  width:85%;
+  border:1px solid #ffd700;
 }
 
 input {
@@ -99,7 +107,7 @@ button {
 }
 
 .confirmar {
-  background: gold;
+  background: #ffd700;
 }
 
 .admin {
@@ -111,7 +119,8 @@ button {
 
 <body>
 
-<img src="logo.jpg">
+<!-- 🔥 LOGO -->
+<img src="logo.png">
 <h1>La Moñona</h1>
 
 <div class="stats">
@@ -144,7 +153,6 @@ button {
 
     <hr>
 
-    <!-- ADMIN OCULTO -->
     <button class="admin" id="btnPagado" onclick="marcarPagado()" style="display:none;">Marcar pagado</button>
     <button class="admin" id="btnLiberar" onclick="liberar()" style="display:none;">Liberar número</button>
 
@@ -200,13 +208,14 @@ db.collection("rifa").onSnapshot(snapshot => {
 
     div.onclick = () => {
 
-      if (datosGlobal[num]) return;
+      // 🔥 CLIENTE NO PUEDE TOCAR OCUPADOS
+      if (datosGlobal[num] && !window.location.href.includes("admin")) return;
 
       seleccionado = num;
       document.getElementById("modal").style.display = "flex";
       document.getElementById("titulo").innerText = "Número " + num;
 
-      // ADMIN SOLO CON ?admin
+      // 🔐 ADMIN
       if (window.location.href.includes("admin")) {
         document.getElementById("btnPagado").style.display = "inline-block";
         document.getElementById("btnLiberar").style.display = "inline-block";
