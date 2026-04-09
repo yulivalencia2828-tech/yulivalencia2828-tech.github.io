@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Apuesta la Moñona</title>
+<style>
+body { font-family: Arial; text-align: center; background: #111; color: white; }
+.grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 10px; padding: 20px; }
+.num { padding: 15px; background: gold; border-radius: 10px; cursor: pointer; font-weight: bold; }
+.ocupado { background: red !important; cursor: not-allowed; }
+</style>
+</head>
+<body>
+<h1>🎰 Apuesta la Moñona</h1>
+<div class="grid" id="grid"></div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+const firebaseConfig = {
+  apiKey: "AIzaSyDabSu4sfX_TcixurJUgxvv9eED",
+  authDomain: "apuesta-la-monona.firebaseapp.com",
+  projectId: "apuesta-la-monona",
+  storageBucket: "apuesta-la-monona.appspot.com",
+  messagingSenderId: "13870228118",
+  appId: "1:13870228118:web:402df74bd55c083"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const docRef = doc(db, "rifa", "numeros");
+let ocupados = [];
+async function cargar() {
+  const snap = await getDoc(docRef);
+  if (snap.exists()) {
+    ocupados = JSON.parse(snap.data().lista || "[]");
+  }
+  pintar();
+}
+async function seleccionar(num) {
+  if (ocupados.includes(num)) return alert("Número ocupado");
+  ocupados.push(num);
+  await updateDoc(docRef, {
+    lista: JSON.stringify(ocupados)
+  });
+  pintar();
+}
+function pintar() {
+  const grid = document.getElementById("grid");
+  grid.innerHTML = "";
+  for (let i = 1; i <= 100; i++) {
+    const div = document.createElement("div");
+    div.className = "num";
+    div.innerText = i;
+    if (ocupados.includes(i)) {
+      div.classList.add("ocupado");
+    } else {
+      div.onclick = () => seleccionar(i);
+    }
+    grid.appendChild(div);
+  }
+}
+cargar();
+</script>
+</body>
+</html>
