@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>La Moñona</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      background: #111;
+      color: white;
+    }
+
+    h1 {
+      margin-top: 20px;
+    }
+
+    #grid {
+      display: grid;
+      grid-template-columns: repeat(10, 40px);
+      gap: 10px;
+      justify-content: center;
+      margin-top: 30px;
+    }
+
+    button {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      border: none;
+      background: gold;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      background: red !important;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>La Moñona</h1>
+
+  <div id="grid"></div>
+
+  <script>
+    const grid = document.getElementById("grid");
+
+    for (let i = 1; i <= 100; i++) {
+      const btn = document.createElement("button");
+      btn.textContent = i;
+
+      btn.onclick = () => {
+        btn.disabled = true;
+      };
+
+      grid.appendChild(btn);
+    }
+  </script>
+
+</body>
+</html>
